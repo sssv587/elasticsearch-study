@@ -43,10 +43,30 @@ public class ES_Doc_Query {
 //        }
 
         // 2.条件查询：termQuery
+//        SearchRequest request = new SearchRequest();
+//        request.indices("user");
+//
+//        request.source(new SearchSourceBuilder().query(QueryBuilders.termQuery("age", 30)));
+//        SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
+//
+//        SearchHits hits = response.getHits();
+//        System.out.println(hits.getTotalHits());
+//        System.out.println(response.getTook());
+//
+//        for (SearchHit hit : hits) {
+//            System.out.println(hit.getSourceAsString());
+//        }
+//
+
+        // 3.分页查询
         SearchRequest request = new SearchRequest();
         request.indices("user");
 
-        request.source(new SearchSourceBuilder().query(QueryBuilders.termQuery("age", 30)));
+        SearchSourceBuilder builder = new SearchSourceBuilder().query(QueryBuilders.matchAllQuery());
+        //(当前页码-1)*每页显示数据条数
+        builder.from(0);
+        builder.size(2);
+        request.source(builder);
         SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
 
         SearchHits hits = response.getHits();
@@ -56,6 +76,7 @@ public class ES_Doc_Query {
         for (SearchHit hit : hits) {
             System.out.println(hit.getSourceAsString());
         }
+
 
         esClient.close();
     }
