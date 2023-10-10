@@ -10,6 +10,7 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -116,21 +117,44 @@ public class ES_Doc_Query {
 //            System.out.println(hit.getSourceAsString());
 //        }
 
-        // 6.组合查询
+//        // 6.组合查询
+//        SearchRequest request = new SearchRequest();
+//        request.indices("user");
+//
+//        SearchSourceBuilder builder = new SearchSourceBuilder();
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//
+//        // 相当于and
+////        boolQueryBuilder.must(QueryBuilders.matchQuery("age", 30));
+////        boolQueryBuilder.mustNot(QueryBuilders.matchQuery("sex", "男"));
+//        // 相当于or
+//        boolQueryBuilder.should(QueryBuilders.matchQuery("age", 30));
+//        boolQueryBuilder.should(QueryBuilders.matchQuery("age", 40));
+//
+//        builder.query(boolQueryBuilder);
+//
+//        request.source(builder);
+//        SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
+//
+//        SearchHits hits = response.getHits();
+//        System.out.println(hits.getTotalHits());
+//        System.out.println(response.getTook());
+//
+//        for (SearchHit hit : hits) {
+//            System.out.println(hit.getSourceAsString());
+//        }
+
+        // 7.范围查询
         SearchRequest request = new SearchRequest();
         request.indices("user");
 
         SearchSourceBuilder builder = new SearchSourceBuilder();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("age");
 
-        // 相当于and
-//        boolQueryBuilder.must(QueryBuilders.matchQuery("age", 30));
-//        boolQueryBuilder.mustNot(QueryBuilders.matchQuery("sex", "男"));
-        // 相当于or
-        boolQueryBuilder.should(QueryBuilders.matchQuery("age", 30));
-        boolQueryBuilder.should(QueryBuilders.matchQuery("age", 40));
+        rangeQuery.gte(30);
+        rangeQuery.lte(40);
 
-        builder.query(boolQueryBuilder);
+        builder.query(rangeQuery);
 
         request.source(builder);
         SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
