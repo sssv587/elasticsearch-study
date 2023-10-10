@@ -79,11 +79,31 @@ public class ES_Doc_Query {
 //        }
 
         // 4.查询排序
+//        SearchRequest request = new SearchRequest();
+//        request.indices("user");
+//
+//        SearchSourceBuilder builder = new SearchSourceBuilder().query(QueryBuilders.matchAllQuery());
+//        builder.sort("age", SortOrder.DESC);
+//        request.source(builder);
+//        SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
+//
+//        SearchHits hits = response.getHits();
+//        System.out.println(hits.getTotalHits());
+//        System.out.println(response.getTook());
+//
+//        for (SearchHit hit : hits) {
+//            System.out.println(hit.getSourceAsString());
+//        }
+
+        // 5.过滤字段
         SearchRequest request = new SearchRequest();
         request.indices("user");
 
         SearchSourceBuilder builder = new SearchSourceBuilder().query(QueryBuilders.matchAllQuery());
-        builder.sort("age", SortOrder.DESC);
+        //
+        String[] excludes = {"age"};
+        String[] includes = {"name"};
+        builder.fetchSource(includes, excludes);
         request.source(builder);
         SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
 
