@@ -209,6 +209,7 @@ public class ES_Doc_Query {
 //        SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
 //
 //        SearchHits hits = response.getHits();
+//        System.out.println(response);
 //        System.out.println(hits.getTotalHits());
 //        System.out.println(response.getTook());
 //
@@ -217,18 +218,40 @@ public class ES_Doc_Query {
 //        }
 
         // 10.聚合查询
+//        SearchRequest request = new SearchRequest();
+//        request.indices("user");
+//
+//        SearchSourceBuilder builder = new SearchSourceBuilder();
+//
+//        AggregationBuilder aggregationBuilder = AggregationBuilders.max("maxAge").field("age");
+//        builder.aggregation(aggregationBuilder);
+//
+//        request.source(builder);
+//        SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
+//
+//        SearchHits hits = response.getHits();
+//        System.out.println(response);
+//        System.out.println(hits.getTotalHits());
+//        System.out.println(response.getTook());
+//
+//        for (SearchHit hit : hits) {
+//            System.out.println(hit.getSourceAsString());
+//        }
+
+        // 11.分组查询
         SearchRequest request = new SearchRequest();
         request.indices("user");
 
         SearchSourceBuilder builder = new SearchSourceBuilder();
 
-        AggregationBuilder aggregationBuilder = AggregationBuilders.max("maxAge").field("age");
+        AggregationBuilder aggregationBuilder = AggregationBuilders.terms("ageGroup").field("age");
         builder.aggregation(aggregationBuilder);
 
         request.source(builder);
         SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
 
         SearchHits hits = response.getHits();
+        System.out.println(response);
         System.out.println(hits.getTotalHits());
         System.out.println(response.getTook());
 
