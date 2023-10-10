@@ -8,7 +8,9 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.FuzzyQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -145,16 +147,37 @@ public class ES_Doc_Query {
 //        }
 
         // 7.范围查询
+//        SearchRequest request = new SearchRequest();
+//        request.indices("user");
+//
+//        SearchSourceBuilder builder = new SearchSourceBuilder();
+//        RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("age");
+//
+//        rangeQuery.gte(30);
+//        rangeQuery.lte(40);
+//
+//        builder.query(rangeQuery);
+//
+//        request.source(builder);
+//        SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
+//
+//        SearchHits hits = response.getHits();
+//        System.out.println(hits.getTotalHits());
+//        System.out.println(response.getTook());
+//
+//        for (SearchHit hit : hits) {
+//            System.out.println(hit.getSourceAsString());
+//        }
+
+        // 8.模糊查询
         SearchRequest request = new SearchRequest();
         request.indices("user");
 
         SearchSourceBuilder builder = new SearchSourceBuilder();
-        RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("age");
+        // Fuzziness.ONE表示差一个字符也可以
+        FuzzyQueryBuilder fuzzyQuery = QueryBuilders.fuzzyQuery("name", "wangwu").fuzziness(Fuzziness.ONE);
 
-        rangeQuery.gte(30);
-        rangeQuery.lte(40);
-
-        builder.query(rangeQuery);
+        builder.query(fuzzyQuery);
 
         request.source(builder);
         SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
@@ -166,6 +189,7 @@ public class ES_Doc_Query {
         for (SearchHit hit : hits) {
             System.out.println(hit.getSourceAsString());
         }
+
 
         esClient.close();
     }
