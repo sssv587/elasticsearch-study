@@ -28,10 +28,25 @@ public class ES_Doc_Query {
         );
 
         // 1.查询索引中全部的数据
+//        SearchRequest request = new SearchRequest();
+//        request.indices("user");
+//
+//        request.source(new SearchSourceBuilder().query(QueryBuilders.matchAllQuery()));
+//        SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
+//
+//        SearchHits hits = response.getHits();
+//        System.out.println(hits.getTotalHits());
+//        System.out.println(response.getTook());
+//
+//        for (SearchHit hit : hits) {
+//            System.out.println(hit.getSourceAsString());
+//        }
+
+        // 2.条件查询：termQuery
         SearchRequest request = new SearchRequest();
         request.indices("user");
 
-        request.source(new SearchSourceBuilder().query(QueryBuilders.matchAllQuery()));
+        request.source(new SearchSourceBuilder().query(QueryBuilders.termQuery("age", 30)));
         SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
 
         SearchHits hits = response.getHits();
