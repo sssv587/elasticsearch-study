@@ -2,3 +2,4 @@
 /target/
 /es-spring/target
 /.fastRequest
+/es-sparkstreaming/target
