@@ -3,3 +3,4 @@
 /es-spring/target
 /.fastRequest
 /es-sparkstreaming/target
+/es-flink/target
